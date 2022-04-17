@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 const app = express();
 const authRoutes = require('./src/routes/auth');
@@ -11,7 +12,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', 'Content-Type, Authorization');
     next();
-})
+});
 
 app.use('/v1/auth', authRoutes);
 app.use('/v1/blog', blogRoutes);
@@ -22,6 +23,10 @@ app.use((error, req, res, next) => {
     const data = error.data;
 
     res.status(status).json({ message: message, data: data });
-})
+});
 
-app.listen(4000);
+mongoose.connect('mongodb+srv://rindhoni12:rindhoni12345@cluster0.hnasg.mongodb.net/blog?retryWrites=true&w=majority')
+.then(() => {
+    app.listen(4000, () => console.log('Connection Success'));
+})
+.catch(err => console.log(err));
