@@ -1,0 +1,85 @@
+###
+Standard API
+{root.api}/{version}/{grouping}/{endpoint}
+SAMPLE:
+http://mern-api.kabayancoding.com/v1/auth/login
+
+###
+Standard Status Response
+200 - OK                    => Call API Success
+201 - CREATED               => POST Success
+400 - BAD REQUEST           => ERROR on Client Side (Can be wrong input etc)
+401 - UNAUTHORIZED          => USER Not Authorized to do REQUEST
+403 - FORBIDDEN             => USER Not Allowed to ACCESS
+404 - NOT FOUND             => ENDPOINT Not FOUND
+500 - INTERNAL SERVER ERROR => ERROR on Server Side
+502 - BAD GATEWAY           => INVALID Response from Another REQUEST
+===============================================================================================
+
+###
+GROUP: Authentication
+
+[1] - Register
+[POST] : {root.api}/{version}/auth/register
+
+req :
+{
+    "name": "Testing",
+    "email": "test@gmail.com",
+    "password": "123123"
+}
+
+res :
+{
+    "message": "Register Success",
+    "data": {
+        "name": "Testing",
+        "email": "test@gmail.com",
+        "password": "123123"
+    }
+}
+
+error-res :
+201 => Register Success
+400 => Input yang anda berikan tidak valid
+
+###
+[2] - Login
+{root.api}/{version}/auth/login
+
+GROUP: Blog
+
+[1] - Create Blog Post
+[POST] : {root.api}/{version}/blog/post
+
+req :
+{
+    "title": "Blog Title",
+    "image": "blog1.png",
+    "body": "lorem ipsum dolor sit atme"
+}
+
+res :
+{
+    "message": "Create Blog Post Success",
+    "data": {
+        "post_id": 1,
+        "title": "Blog Title",
+        "image": "blog1.png",
+        "body": "lorem ipsum dolor sit atme",
+        "created_at": "12/06/2022",
+        "author": {
+            "uid": 1,
+            "name": "Tester User"
+        }
+    }
+}
+
+error-res :
+201 => Create Blog Post Success
+400 => Input yang anda berikan tidak valid
+
+###
+[2] - Get Blog Post
+[3] - Update Blog Post
+[4] - Delete Blog Post
