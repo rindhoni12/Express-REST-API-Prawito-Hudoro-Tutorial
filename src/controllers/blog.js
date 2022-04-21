@@ -45,11 +45,27 @@ exports.createBlogPost = (req, res, next) => {
 }
 
 exports.getAllBlogPost = (req, res, next) => {
+    const currentPage = req.query.page || 1;
+    const perPage = req.query.perPage || 5;
+    let totalItems;
+
     BlogPost.find()
+    .countDocuments() // untuk menghitung jumlah data yang ada, memberi promise
+    .then(count => {
+        totalItems = count;
+        return BlogPost.find() //ada promisnya
+        .skip((parseInt(currentPage) - 1) * parseInt(perPage)) 
+        .limit(parseInt(perPage));
+        // skip digunakan untuk melewati data yang tidak dibutuhkan, jika curPage (0-1)*perPage 5 maka data dimulai dr satu, jika page 2 maka (2-1)*5 maka data dimulai dari data ke 6
+        // limit untuk menampilkan jumlahnya sesuai yg dibutuhkan, contoh pasge 2, akan menampilkan data dari no 6-10 krn perpage-nya 5
+    })
     .then(result => {
         res.status(200).json({
-            message: 'Get All Data(s) Success',
-            data: result
+            message: 'Get All Data(s) Success but Paginated',
+            data: result,
+            total_data: totalItems,
+            per_page: parseInt(perPage),
+            current_page: parseInt(currentPage),
         })
     })
     .catch(err => {
