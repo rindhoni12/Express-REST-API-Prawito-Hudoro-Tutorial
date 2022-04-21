@@ -9,7 +9,17 @@ const blogController = require('../controllers/blog')
 router.post('/post', [
     body('title').isLength({min: 5}).withMessage('Title tidak memenuhi kriteria'),
     body('body').isLength({min: 5}).withMessage('Body tidak memenuhi kriteria')
-], blogController.createBlogPost)
+], blogController.createBlogPost);
+
+router.get('/posts', blogController.getAllBlogPost);
+router.get('/post/:postId', blogController.getBlogPostById);
+
+router.put('/post/:postId',[
+    body('title').isLength({min: 5}).withMessage('Title tidak memenuhi kriteria'),
+    body('body').isLength({min: 5}).withMessage('Body tidak memenuhi kriteria')
+], blogController.updateBlogPost);
+
+router.delete('/post/:postId', blogController.deleteBlogPost);
 
 
 module.exports = router;
